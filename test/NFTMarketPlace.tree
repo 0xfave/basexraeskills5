@@ -1,0 +1,42 @@
+NFTMarketPlace.sol
+├── given user wants to list NFT
+    ├── when NFT is approved for marketplace
+    │   ├── it should list the NFT
+    │   └── it should emit NFTListed event
+    └── when NFT is not approved for marketplace
+        └── it should revert with NotApproved error
+│   ├── given NFT owner has approved marketplace
+│   │   ├── when price is greater than 0
+│   │   │   └── it should list NFT and emit NFTListed event
+│   │   └── when price is 0
+│   │       └── it should still list NFT at 0 price
+│   └── given NFT owner has not approved marketplace
+│       └── it should revert with ERC721 transfer error
+│
+├── given user wants to buy NFT
+│   ├── given NFT is listed
+│   │   ├── when msg value equals price
+│   │   │   └── it should transfer NFT and emit NFTSold event
+│   │   ├── when msg value exceeds price
+│   │   │   └── it should transfer NFT and send exact price to seller
+│   │   └── when msg value is less than price
+│   │       └── it should revert with InsufficientFunds
+│   └── given NFT is not listed
+│       └── it should revert with NFTNotListed
+│
+├── given user wants to withdraw NFT
+│   ├── given caller is seller
+│   │   ├── when NFT is listed
+│   │   │   └── it should transfer NFT back and emit NFTWithdrawn
+│   │   └── when NFT is not listed
+│   │       └── it should revert with NFTNotListed
+│   └── given caller is not seller
+│       └── it should revert with NotSeller
+│
+└── given when onERC721Received
+    ├── given empty data
+    │   └── it should return selector
+    ├── given data length is 32 bytes
+    │   └── it should list NFT with decoded price
+    └── given data length is not 32 bytes
+        └── it should revert with InvalidDataLength
